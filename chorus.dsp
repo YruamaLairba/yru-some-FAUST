@@ -17,6 +17,8 @@ varDelaySpl = (0.5*(1+os.oscsin(rate)) : min(1) : max(0))*
 cstDelaySpl = ADDITIONAL_DELAY_MS*ma.SR/1000;
 //total delay
 delaySpl=varDelaySpl+cstDelaySpl;
+//function to do a delay with linear interpolation
+delayInterpol(x,d) = x <:_@floor(d)*(1-ma.frac(d)) , _@ceil(d)*ma.frac(d):>_;
 
-process =  _<: _@delaySpl, _*(1-mix);
+process =  _<: delayInterpol(_,delaySpl)*mix, _*(1-mix):>_;
 
